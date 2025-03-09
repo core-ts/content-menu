@@ -88,7 +88,8 @@ function renderSingleItem(item: MenuItem, r: StringMap): string {
     const x = r[item.resource]
     name = !x || x === "" ? item.name : x
   }
-  return `<li><a class="menu-item" href="${item.path}" onclick="navigate(event)"><i class="material-icons">${item.icon}</i><span>${name}</span></a></li>`
+  const ignoreLang = ", true"
+  return `<li><a class="menu-item" href="${item.path}" onclick="navigate(event${ignoreLang})"><i class="material-icons">${item.icon}</i><span>${name}</span></a></li>`
 }
 function renderArray(item: MenuItem[], r: StringMap): string {
   return item.map((i) => renderSingleItem(i, r)).join("")
