@@ -1,0 +1,26 @@
+{
+  "name": "content-menu",
+  "version": "0.0.1",
+  "description": "content-menu",
+  "main": "./lib/index.js",
+  "types": "./src/index.ts",
+  "scripts": {
+    "build:lib": "tsc",
+    "clean:lib": "rimraf lib"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.12",
+    "tslint": "5.10.0",
+    "typescript": "^3.3.3333"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com/core-ts/content-menu"
+  },
+  "keywords": [
+    "content-menu"
+  ]
+}
