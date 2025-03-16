@@ -116,8 +116,14 @@ export function renderItems(items: MenuItem[], r: StringMap): string {
 }
 
 export class MenuBuilder {
-  constructor(private getResource: (lang: string) => StringMap, private load: () => Promise<MenuItem[]>, private langs: string[], private defaultLang: string) {
+  private map: Map<string, string>
+  constructor(private getResource: (lang: string) => StringMap, private load: () => Promise<MenuItem[]>, langs: string[], private defaultLang: string) {
     this.build = this.build.bind(this)
+    const map = new Map<string, string>()
+    for (let index = 0; index < langs.length; index++) {
+      map.set(langs[index], langs[index])
+    }
+    this.map = map
   }
   build(req: Request, res: Response, next: NextFunction) {
     let lang = req.params["lang"]
@@ -129,29 +135,26 @@ export class MenuBuilder {
     }
     if (!lang || lang.length === 0) {
       lang = this.defaultLang
-    } else {
-      if (!(this.langs.includes(lang) && lang !== this.defaultLang)) {
-        lang = this.defaultLang
-      }
     }
-    if (!this.langs.includes(lang)) {
+    const exist = this.map.get(lang)
+    if (!exist) {
       lang = this.defaultLang
     }
-    this.load()
-      .then((items) => {
-        if (isPartial(req)) {
-          res.locals.menu = items
-          next()
-        } else {
+    if (isPartial(req)) {
+      next()
+    } else {
+      this.load()
+        .then((items) => {
           const r = this.getResource(lang)
           rebuildItems(items, lang, this.defaultLang)
+          res.locals.lang = lang
           res.locals.menu = renderItems(items, r)
           next()
-        }
-      })
-      .catch((err) => {
-        next(err)
-      })
+        })
+        .catch((err) => {
+          next(err)
+        })
+    }
   }
 }
 function rebuildItems(items: MenuItem[], lang: string, defaultLang: string) {
