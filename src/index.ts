@@ -125,12 +125,12 @@ export class MenuBuilder {
     this.map = map
   }
   build(req: Request, res: Response, next: NextFunction) {
-    let lang = req.params["lang"]
+    let lang = req.params["lang"] as string
     if (!lang || lang.length === 0) {
       lang = query(req, "lang")
     }
     if (!lang || lang.length === 0) {
-      lang = req.params["id"]
+      lang = req.params["id"] as string
     }
     if (!lang || lang.length === 0) {
       lang = this.defaultLang

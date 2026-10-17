@@ -1,6 +1,6 @@
 {
   "name": "content-menu",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "content-menu",
   "main": "./lib/index.js",
   "types": "./src/index.ts",
